@@ -11,7 +11,7 @@
        while_true,
        unsafe_code)]
 
-extern crate pwhash;
+extern crate crypto_hash;
 extern crate twox_hash;
 
 pub mod filehash;

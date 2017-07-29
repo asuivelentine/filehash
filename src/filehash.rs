@@ -4,18 +4,15 @@ use std::io::Read;
 
 pub struct Filehash {
     file: OsString,
-    hash: Option<bool>
+    hash: Option<Hash>
 }
 
 pub enum Hash {
     Xxhash,
-    Bcrypt,
-    Bsdi,
     Md5,
     Sha1,
     Sha256,
-    Sha512,
-    Unix
+    Sha512
 }
 
 impl Filehash {
@@ -27,7 +24,7 @@ impl Filehash {
     }
 
     pub fn with_hash(mut self, hash: Hash) -> Filehash {
-        self.hash = Some(true);
+        self.hash = Some(hash);
         self
     }
 
