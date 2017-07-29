@@ -5,4 +5,3 @@ authors = ["Kai Sickeler <k.sickeler@gmail.com>"]
 
 [dependencies]
 crypto-hash = "0.3.0"
-twox-hash = "1.1.0"

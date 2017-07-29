@@ -12,7 +12,6 @@
        unsafe_code)]
 
 extern crate crypto_hash;
-extern crate twox_hash;
 
 pub mod filehash;
 
