@@ -1,12 +1,15 @@
 use std::ffi::OsString;
 use std::fs::OpenOptions;
-use std::io::Read;
+use std::io::{Read, Write};
+
+use crypto_hash::{Hasher, Algorithm};
 
 pub struct Filehash {
     file: OsString,
     hash: Option<Hash>
 }
 
+#[derive(PartialEq, Debug)]
 pub enum Hash {
     Xxhash,
     Md5,
@@ -28,10 +31,22 @@ impl Filehash {
         self
     }
 
-    pub fn hash(self) -> Result<String, ()> {
-        try!(self.read_to_u8());
+    pub fn hash(self) -> Result<Vec<u8>, ()> {
+        let fileconent = try!(self.read_to_u8());
 
-        Ok(String::from("hash"))
+        let mut hasher = match self.hash {
+            Some(Hash::Md5) => Hasher::new(Algorithm::MD5),
+            Some(Hash::Sha1) => Hasher::new(Algorithm::SHA1),
+            Some(Hash::Sha256) => Hasher::new(Algorithm::SHA256), 
+            Some(Hash::Sha512) => Hasher::new(Algorithm::SHA512),
+            _ => Hasher::new(Algorithm::MD5),
+        };
+
+        try!(hasher
+            .write_all(fileconent.as_slice())
+            .map_err(|_| ()));
+
+        Ok(hasher.finish())
     }
 
     fn read_to_u8(&self) -> Result<Vec<u8>, ()> {
