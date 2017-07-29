@@ -4,6 +4,7 @@ use std::io::{Read, Write};
 
 use crypto_hash::{Hasher, Algorithm};
 
+#[derive(Debug)]
 pub struct Filehash {
     file: OsString,
     hash: Option<Hash>
