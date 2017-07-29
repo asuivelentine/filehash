@@ -12,7 +12,7 @@
        unsafe_code)]
 
 extern crate pwhash;
-extern crate twox-hash;
+extern crate twox_hash;
 
 #[cfg(test)]
 mod tests {
