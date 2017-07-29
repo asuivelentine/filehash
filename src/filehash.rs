@@ -59,6 +59,15 @@ impl Filehash {
             .open(&self.file)
             .map_err(|_| ()));
 
+        let is_file = f.metadata()
+            .map(|m| m.is_file())
+            .map_err(|_| ());
+
+        try!(match is_file {
+            Ok(true) => Ok(()),
+            _ => Err(()),
+        });
+
         try!(f.read_to_end(&mut content)
             .map_err(|_| ()));
 
