@@ -14,6 +14,8 @@
 extern crate pwhash;
 extern crate twox_hash;
 
+pub mod filehash;
+
 #[cfg(test)]
 mod tests {
     #[test]
