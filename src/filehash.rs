@@ -6,14 +6,22 @@ use crypto_hash::{Hasher, Algorithm};
 
 pub use error::FilehashError;
 
+/// Errortype of Filehash.
 pub type Result<T> = ::std::result::Result<T, FilehashError>;
 
+/// Builder for hashing files
+///
+///```rust
+///     Filehash::new(OsString::from("/bin/bash"))
+///         .with_hash(Hash::Sha512)
+///         .hash()
 #[derive(Debug)]
 pub struct Filehash {
     file: OsString,
     hash: Option<Hash>
 }
 
+/// Definition of available hash algorithm.
 #[derive(PartialEq, Debug)]
 pub enum Hash {
     Xxhash,
@@ -24,6 +32,7 @@ pub enum Hash {
 }
 
 impl Filehash {
+    /// Creates a new representation of information needed to create the hash.
     pub fn new(file: OsString) -> Filehash {
         Filehash {
             file: file,
@@ -31,11 +40,13 @@ impl Filehash {
         }
     }
 
+    /// Specifies the hash algorithm.
     pub fn with_hash(mut self, hash: Hash) -> Filehash {
         self.hash = Some(hash);
         self
     }
 
+    /// Read files content and calculates the hash.
     pub fn hash(self) -> Result<Vec<u8>> {
         let fileconent = try!(self.read_to_u8());
 
