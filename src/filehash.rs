@@ -4,6 +4,10 @@ use std::io::{Read, Write};
 
 use crypto_hash::{Hasher, Algorithm};
 
+pub use error::FilehashError;
+
+pub type Result<T> = ::std::result::Result<T, FilehashError>;
+
 #[derive(Debug)]
 pub struct Filehash {
     file: OsString,
@@ -32,7 +36,7 @@ impl Filehash {
         self
     }
 
-    pub fn hash(self) -> Result<Vec<u8>, ()> {
+    pub fn hash(self) -> Result<Vec<u8>> {
         let fileconent = try!(self.read_to_u8());
 
         let mut hasher = match self.hash {
@@ -45,31 +49,27 @@ impl Filehash {
 
         try!(hasher
             .write_all(fileconent.as_slice())
-            .map_err(|_| ()));
+            .map_err(|_| FilehashError::HashError));
 
         Ok(hasher.finish())
     }
 
-    fn read_to_u8(&self) -> Result<Vec<u8>, ()> {
+    fn read_to_u8(&self) -> Result<Vec<u8>> {
         let mut content = Vec::<u8>::new();
 
         let mut f = try!(OpenOptions::new()
             .read(true)
             .create(false)
-            .open(&self.file)
-            .map_err(|_| ()));
+            .open(&self.file));
 
-        let is_file = f.metadata()
+        try!(f.metadata()
             .map(|m| m.is_file())
-            .map_err(|_| ());
+            .map(|b| match b {
+                true => Ok(true),
+                _ => Err(FilehashError::FileNotFound),
+            }));
 
-        try!(match is_file {
-            Ok(true) => Ok(()),
-            _ => Err(()),
-        });
-
-        try!(f.read_to_end(&mut content)
-            .map_err(|_| ()));
+        try!(f.read_to_end(&mut content));
 
         Ok(content)
     }
