@@ -91,6 +91,16 @@ mod tests {
     }
 
     #[test]
+    fn invalid_path() {
+        let file = OsString::from("./testfiles/unknown");
+        let hash = Filehash::new(file)
+            .with_hash(Hash::Sha256)
+            .hash();
+
+        assert!(hash.is_err());
+    }
+
+    #[test]
     fn md5_hash() {
         let file = OsString::from("./testfiles/main.c");
         let hash = Filehash::new(file)
