@@ -1,6 +1,7 @@
 use std::ffi::OsString;
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
+use std::convert::From;
 
 use crypto_hash::{Hasher, Algorithm};
 
@@ -28,6 +29,17 @@ pub enum Hash {
     Sha1,
     Sha256,
     Sha512
+}
+
+impl <T: Into<String>>From<T> for Filehash {
+    fn from(file: T) -> Filehash {
+        let file = file.into();
+
+        Filehash {
+            file: OsString::from(file),
+            hash: None
+        }
+    }
 }
 
 impl Filehash {
@@ -95,6 +107,14 @@ mod tests {
     fn new() {
         let file = OsString::from("/bin/bash");
         let fh = Filehash::new(file);
+
+        assert_eq!(fh.file, OsString::from("/bin/bash"));
+        assert_eq!(fh.hash, None);
+    }
+
+    #[test]
+    fn from() {
+        let fh = Filehash::from("/bin/bash");
 
         assert_eq!(fh.file, OsString::from("/bin/bash"));
         assert_eq!(fh.hash, None);
