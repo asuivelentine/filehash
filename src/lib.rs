@@ -3,10 +3,10 @@
 //! Filehash is a small crypto_hash wrapper for files.
 //!
 //! ```rust
-//! use filehash::{Filehash, Hash};
+//! use filehash::filehash::{Filehash, Hash};
 //!
 //! fn calculate_hash() -> Vec<u8> {
-//!     Filehash::new(OsString::from("/bin/bash"))
+//!     Filehash::from("/bin/bash")
 //!         .with_hash(Hash::Sha512)
 //!         .hash()
 //!         .unwrap()

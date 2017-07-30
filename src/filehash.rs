@@ -12,10 +12,17 @@ pub type Result<T> = ::std::result::Result<T, FilehashError>;
 
 /// Builder for hashing files
 ///
-///```rust
+/// ```rust
+/// use std::ffi::OsString;
+/// use filehash::filehash::{Filehash, Hash};
+///
+/// fn calculate_hash() -> Vec<u8> {
 ///     Filehash::new(OsString::from("/bin/bash"))
 ///         .with_hash(Hash::Sha512)
 ///         .hash()
+///         .unwrap()
+/// }
+/// ```
 #[derive(Debug)]
 pub struct Filehash {
     file: OsString,
