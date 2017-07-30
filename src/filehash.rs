@@ -24,7 +24,6 @@ pub struct Filehash {
 /// Definition of available hash algorithm.
 #[derive(PartialEq, Debug)]
 pub enum Hash {
-    Xxhash,
     Md5,
     Sha1,
     Sha256,
