@@ -12,8 +12,10 @@
        unsafe_code)]
 
 extern crate crypto_hash;
+#[macro_use] extern crate quick_error;
 
 pub mod filehash;
+pub mod error;
 
 #[cfg(test)]
 mod tests {
