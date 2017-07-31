@@ -42,10 +42,7 @@ impl <T: Into<String>>From<T> for Filehash {
     fn from(file: T) -> Filehash {
         let file = file.into();
 
-        Filehash {
-            file: OsString::from(file),
-            hash: None
-        }
+        Filehash::new(OsString::from(file))
     }
 }
 
